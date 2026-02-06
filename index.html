@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Inventario - Supermercados La Vaquita</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; }
+    h1 { color: #0078d4; text-align: center; }
+    label { display: block; margin-top: 15px; font-weight: bold; }
+    input, select { width: 100%; padding: 8px; margin-top: 5px; }
+    button { background: #0078d4; color: white; padding: 10px 20px; border: none; margin-top: 20px; cursor: pointer; }
+    button:hover { background: #005a9e; }
+    #mensaje { margin-top: 15px; padding: 10px; border-radius: 4px; }
+    .exito { background: #d4edda; color: #155724; }
+    .error { background: #f8d7da; color: #721c24; }
+  </style>
+</head>
+<body>
+  <h1>📦 Registro de Inventario – La Vaquita</h1>
+  <form id="formulario">
+    <label for="tienda">Tienda:</label>
+    <select id="tienda" required>
+      <option value="">Seleccione...</option>
+      <option value="Ibague">Ibagué</option>
+      <option value="Neiva">Neiva</option>
+      <option value="Popayan">Popayán</option>
+      <option value="Monteria">Montería</option>
+      <option value="Sincelejo">Sincelejo</option>
+    </select>
+
+    <label for="producto">Producto:</label>
+    <input type="text" id="producto" placeholder="Ej: Arroz Diana 500g" required />
+
+    <label for="cantidad">Cantidad:</label>
+    <input type="number" id="cantidad" min="1" required />
+
+    <label for="tipo">Tipo de movimiento:</label>
+    <select id="tipo" required>
+      <option value="">Seleccione...</option>
+      <option value="Entrada">Entrada (compra/bodega)</option>
+      <option value="Salida">Salida (venta/merma)</option>
+    </select>
+
+    <button type="submit">Registrar Movimiento</button>
+  </form>
+  <div id="mensaje"></div>
+
+  <script>
+    // ⚠️ CONFIGURACIÓN: Reemplaza estos valores con los de tu cuenta de Azure
+    const storageAccountName = "lavauitainventario123"; // ← TU NOMBRE DE STORAGE ACCOUNT
+    const tableName = "InventarioTiendas";
+    
+    // NOTA: Para producción, usa SAS tokens o Managed Identity.
+    // En este taller educativo, usamos una clave temporal (solo para demo).
+    // ¡NUNCA expongas claves reales en código frontend!
+    
+    document.getElementById('formulario').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const mensajeDiv = document.getElementById('mensaje');
+      mensajeDiv.className = '';
+      mensajeDiv.textContent = 'Enviando...';
+      
+      try {
+        // Simulación: en un entorno real, esto iría a una API segura.
+        // Pero para fines educativos, mostramos cómo se vería la integración.
+        
+        const registro = {
+          Tienda: document.getElementById('tienda').value,
+          Producto: document.getElementById('producto').value,
+          Cantidad: parseInt(document.getElementById('cantidad').value),
+          Tipo: document.getElementById('tipo').value,
+          Fecha: new Date().toISOString()
+        };
+        
+        // Aquí iría la llamada a Azure Table Storage (requiere backend seguro)
+        // Por ahora, simulamos éxito.
+        console.log("Registro a guardar:", registro);
+        
+        mensajeDiv.className = 'exito';
+        mensajeDiv.textContent = '✅ ¡Movimiento registrado! (Simulado)';
+        
+        document.getElementById('formulario').reset();
+        
+      } catch (error) {
+        mensajeDiv.className = 'error';
+        mensajeDiv.textContent = '❌ Error: ' + error.message;
+      }
+    });
+  </script>
+</body>
+</html>
